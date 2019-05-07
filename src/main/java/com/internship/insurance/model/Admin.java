@@ -1,14 +1,28 @@
 package com.internship.insurance.model;
 
+import com.internship.insurance.utils.Role;
+
+import javax.persistence.*;
+
 @Entity
-@Table(name="employees")
+@Table(name = "employees")
 public class Admin {
     @Id
-    @GenerationType(Strategy=GenetationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
-    private Sting password;
+    private String password;
     private Role role;
+
+    public Admin() {
+    }
+
+    public Admin(Long id, String login, String password, Role role) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -26,27 +40,19 @@ public class Admin {
         this.login = login;
     }
 
-    public Sting getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Sting password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public com.internship.insurance.model.Role getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(com.internship.insurance.model.Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
-
-enum Role{
-    ADMIN,
-    MODERATOR,
-    USER
-}
-
-
