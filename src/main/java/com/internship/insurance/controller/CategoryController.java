@@ -3,6 +3,7 @@ package com.internship.insurance.controller;
 import com.internship.insurance.model.Category;
 import com.internship.insurance.repository.CategoryRepo;
 import javassist.NotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,16 +45,16 @@ public class CategoryController {
     @PutMapping("categories/{id}")
     public ResponseEntity<Category> editOneCategory(
             @PathVariable Long id,
-            @RequestBody Category categoryDetails)
-            throws NotFoundException {
+            @RequestBody Category categoryDetails
+    ) throws NotFoundException {
         Optional<Category> categoryFromDb = categoryRepo.findById(id);
         if (categoryFromDb.isPresent()) {
-            Category category = categoryFromDb.get();
-            category.setId(categoryDetails.getId());
-            category.setTitle(categoryDetails.getTitle());
-            return ResponseEntity.ok(categoryRepo.save(category));
+            BeanUtils.copyProperties(categoryDetails, categoryFromDb.get());
+            categoryFromDb.get().setId(id);
+            categoryRepo.save(categoryFromDb.get());
+            return ResponseEntity.ok(categoryFromDb.get());
         } else {
-            throw new NotFoundException("Category not found");
+            throw new NotFoundException("Category not found!");
         }
     }
 

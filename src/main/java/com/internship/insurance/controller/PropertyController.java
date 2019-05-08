@@ -3,6 +3,7 @@ package com.internship.insurance.controller;
 import com.internship.insurance.model.Property;
 import com.internship.insurance.repository.PropertyRepo;
 import javassist.NotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,17 +38,6 @@ public class PropertyController {
         }
     }
 
-//    @GetMapping("properties/{id}")
-//    public List<Property> getAllPropertiesForCategory(@PathVariable Long id) {
-//        List<Property> properties = new ArrayList<>();
-//        for(Property property : getAllProperties()) {
-//            if(property.getCategory().getId().equals(id)) {
-//                properties.add(property);
-//            }
-//        }
-//        return properties;
-//    }
-
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("properties/add")
     public void addProperty(@RequestBody Property property) {
@@ -58,24 +48,22 @@ public class PropertyController {
     @PutMapping("properties/{id}")
     public ResponseEntity<Property> editOneProperty(
             @PathVariable Long id,
-            @RequestBody Property propertyDetails)
-            throws NotFoundException {
+            @RequestBody Property propertyDetails
+    ) throws NotFoundException {
         Optional<Property> propertyFromDb = propertyRepo.findById(id);
-        if(propertyFromDb.isPresent()) {
-            Property property = propertyFromDb.get();
-            property.setId(propertyDetails.getId());
-            property.setCategory(propertyDetails.getCategory());
-            property.setCoefficient(propertyDetails.getCoefficient());
-            property.setTitle(propertyDetails.getTitle());
-            return ResponseEntity.ok(propertyRepo.save(property));
-        }
-        else {
-            throw new NotFoundException("Property not found");
+
+        if (propertyFromDb.isPresent()) {
+            BeanUtils.copyProperties(propertyDetails, propertyFromDb.get());
+            propertyFromDb.get().setId(id);
+            propertyRepo.save(propertyFromDb.get());
+            return ResponseEntity.ok(propertyFromDb.get());
+        } else {
+            throw new NotFoundException("Property not found!");
         }
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping
+    @DeleteMapping("properties/{id}")
     public void deleteOneProperty(@PathVariable Long id) {
         propertyRepo.deleteById(id);
     }

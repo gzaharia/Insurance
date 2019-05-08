@@ -1,7 +1,5 @@
 package com.internship.insurance.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +13,6 @@ public class Property {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnore
     private Category category;
 
     private double coefficient;
