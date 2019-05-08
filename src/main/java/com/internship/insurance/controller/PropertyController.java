@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/admin")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class PropertyController {
     private final PropertyRepo propertyRepo;
 
@@ -39,16 +38,17 @@ public class PropertyController {
     }
 
     @GetMapping("properties/{id}")
-    public List<Property> getAllPropertiesForCategory(@PathVariable Long categoryId) {
+    public List<Property> getAllPropertiesForCategory(@PathVariable Long id) {
         List<Property> properties = new ArrayList<>();
         for(Property property : getAllProperties()) {
-            if(property.getCategory().getId().equals(categoryId)) {
+            if(property.getCategory().getId().equals(id)) {
                 properties.add(property);
             }
         }
         return properties;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("properties/{id}")
     public void addProperty(@RequestBody Property property) {
         propertyRepo.save(property);

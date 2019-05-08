@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/admin")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class CategoryController {
     private final CategoryRepo categoryRepo;
 
@@ -35,6 +34,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("categories/add")
     public void addOneCategory(@RequestBody Category category) {
         categoryRepo.save(category);
