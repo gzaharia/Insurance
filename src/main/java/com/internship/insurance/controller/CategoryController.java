@@ -40,6 +40,7 @@ public class CategoryController {
         categoryRepo.save(category);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("categories/{id}")
     public ResponseEntity<Category> editOneCategory(
             @PathVariable Long id,
@@ -56,6 +57,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("categories/{id}")
     public void deleteOneCategory(@PathVariable Long id) {
         categoryRepo.deleteById(id);

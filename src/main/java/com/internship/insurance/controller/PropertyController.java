@@ -54,6 +54,7 @@ public class PropertyController {
         propertyRepo.save(property);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("properties/{id}")
     public ResponseEntity<Property> editOneProperty(
             @PathVariable Long id,
@@ -73,6 +74,7 @@ public class PropertyController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping
     public void deleteOneProperty(@PathVariable Long id) {
         propertyRepo.deleteById(id);
