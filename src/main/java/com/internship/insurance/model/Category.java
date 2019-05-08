@@ -1,6 +1,7 @@
 package com.internship.insurance.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,11 +16,17 @@ public class Category {
     private List<Property> properties;
 
     public Category() {
-
+        this.properties = new ArrayList<>();
     }
 
     public Category(String title) {
         this.title = title;
+        this.properties = new ArrayList<>();
+    }
+
+    public Category(String title, List<Property> properties) {
+        this.title = title;
+        this.properties = properties;
     }
 
     public Long getId() {

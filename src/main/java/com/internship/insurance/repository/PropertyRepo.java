@@ -1,4 +1,7 @@
 package com.internship.insurance.repository;
 
-public interface PropertyRepo {
+import com.internship.insurance.model.Property;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PropertyRepo extends JpaRepository<Property, Long> {
 }
