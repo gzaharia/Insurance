@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("api")
+@CrossOrigin
 public class CategoryController {
     private final CategoryRepo categoryRepo;
 

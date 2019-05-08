@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/admin")
+@CrossOrigin
 public class PropertyController {
     private final PropertyRepo propertyRepo;
 

@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
+@CrossOrigin
 public class AdminController {
 
     private final EmployeeRepo employeeRepo;
