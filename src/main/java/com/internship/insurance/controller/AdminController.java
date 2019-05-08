@@ -48,4 +48,20 @@ public class AdminController {
         employeeRepo.save(newEmployee);
         return employee;
     }
+
+    @PutMapping("/users/{id}")
+    public Employee editOneEmployee(
+            @PathVariable Long id,
+            @RequestBody Employee employee
+    ) {
+        employee.setId(id);
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        employeeRepo.save(employee);
+        return employee;
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteOneEmployee(@PathVariable Long id) {
+        employeeRepo.deleteById(id);
+    }
 }
