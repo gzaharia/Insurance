@@ -1,4 +1,10 @@
 package com.internship.insurance.repository;
 
-public interface CategoryRepo {
+import com.internship.insurance.model.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepo extends JpaRepository<Category, Long> {
+
+
+
 }
