@@ -6,20 +6,23 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "employees")
-public class Admin {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
+    
+    @Column(nullable = false, unique = true)
+    private String username;
+    
     private String password;
     private Role role;
 
-    public Admin() {
+    public Employee() {
     }
 
-    public Admin(Long id, String login, String password, Role role) {
+    public Employee(Long id, String username, String password, Role role) {
         this.id = id;
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.role = role;
     }
@@ -32,12 +35,12 @@ public class Admin {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
