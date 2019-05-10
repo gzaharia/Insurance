@@ -8,7 +8,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,22 +27,25 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/login")
+    @RequestMapping("/login")
     public boolean login(@RequestBody Employee employee) {
         Optional<Employee> employeeFromDb = Optional.ofNullable(employeeRepo.findByUsername(employee.getUsername()));
 
         return employeeFromDb.isPresent();
     }
 
+    @RequestMapping("/user")
+    public Principal user(HttpServletRequest request) {
+        String authToken = request.getHeader("Authorization")
+                .substring("Basic".length()).trim();
+        return () ->  new String(Base64.getDecoder()
+                .decode(authToken)).split(":")[0];
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public List<Employee> getAllEmployees() {
         return employeeRepo.findAll();
-    }
-
-    @GetMapping("/user")
-    public Principal user(Principal user) {
-        return user;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
