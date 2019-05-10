@@ -8,12 +8,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin
 public class AdminController {
 
@@ -25,11 +25,25 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @PostMapping("/login")
+    public boolean login(@RequestBody Employee employee) {
+        Optional<Employee> employeeFromDb = Optional.ofNullable(employeeRepo.findByUsername(employee.getUsername()));
+
+        return employeeFromDb.isPresent();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public List<Employee> getAllEmployees() {
         return employeeRepo.findAll();
     }
 
+    @GetMapping("/user")
+    public Principal user(Principal user) {
+        return user;
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users/{id}")
     public Employee getOneEmployee(@PathVariable Long id) throws NotFoundException {
         Optional<Employee> employeeFromDb = employeeRepo.findById(id);
@@ -40,6 +54,7 @@ public class AdminController {
             throw new NotFoundException("Employee not found.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/users/add")
     public Employee addOneEmployee(@RequestBody Employee employee) {
         Employee newEmployee = new Employee();
@@ -50,6 +65,7 @@ public class AdminController {
         return employee;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/users/{id}")
     public Employee editOneEmployee(
             @PathVariable Long id,
@@ -61,6 +77,7 @@ public class AdminController {
         return employee;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{id}")
     public void deleteOneEmployee(@PathVariable Long id) {
         employeeRepo.deleteById(id);

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("api")
 @CrossOrigin
 public class PropertyController {
     private final PropertyRepo propertyRepo;

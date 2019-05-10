@@ -38,8 +38,9 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("categories/add")
-    public void addOneCategory(@RequestBody Category category) {
+    public Category addOneCategory(@RequestBody Category category) {
         categoryRepo.save(category);
+        return category;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
