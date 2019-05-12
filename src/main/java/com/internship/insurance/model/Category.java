@@ -1,5 +1,7 @@
 package com.internship.insurance.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Category {
     private String title;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Property> properties;
 
     public Category() {
@@ -43,5 +46,13 @@ public class Category {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
     }
 }
