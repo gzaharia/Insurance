@@ -1,67 +1,65 @@
 package com.internship.insurance.model;
 
-import com.internship.insurance.utils.Role;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "employees")
-public class Employee implements UserDetails {
+public class Employee extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "username", length = 100)
+    private String userName;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(name = "first_name", length = 100)
+    private String firstName;
 
+    @Column(name = "last_name", length = 100)
+    private String lastName;
+
+    @Column(name = "password")
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "employee_role", joinColumns = @JoinColumn(name = "employee_id"))
-    @Enumerated(EnumType.STRING)
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinTable(
+            name = "employee_roles",
+            joinColumns = {@JoinColumn(name = "employee_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+    )
+    @JsonManagedReference
+    @JsonIgnore
     private Set<Role> roles;
 
-    public Employee(String username, String password, Set<Role> roles) {
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
+    public String getUserName() {
+        return userName;
     }
 
-    public Employee() {
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String getLastName() {
+        return lastName;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -70,18 +68,6 @@ public class Employee implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public Set<Role> getRoles() {

@@ -36,15 +36,13 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("categories/add")
     public Category addOneCategory(@RequestBody Category category) {
         categoryRepo.save(category);
         return category;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("categories/{id}")
+    @PutMapping("categories/edit/{id}")
     public ResponseEntity<Category> editOneCategory(
             @PathVariable Long id,
             @RequestBody Category categoryDetails
@@ -60,8 +58,7 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("categories/{id}")
+    @DeleteMapping("categories/delete/{id}")
     public void deleteOneCategory(@PathVariable Long id) {
         categoryRepo.deleteById(id);
     }

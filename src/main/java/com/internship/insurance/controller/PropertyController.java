@@ -39,14 +39,12 @@ public class PropertyController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("properties/add")
     public void addProperty(@RequestBody Property property) {
         propertyRepo.save(property);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("properties/{id}")
+    @PutMapping("properties/edit/{id}")
     public ResponseEntity<Property> editOneProperty(
             @PathVariable Long id,
             @RequestBody Property propertyDetails
@@ -63,8 +61,7 @@ public class PropertyController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("properties/{id}")
+    @DeleteMapping("properties/delete/{id}")
     public void deleteOneProperty(@PathVariable Long id) {
         propertyRepo.deleteById(id);
     }
