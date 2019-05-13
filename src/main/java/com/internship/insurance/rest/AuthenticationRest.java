@@ -1,4 +1,4 @@
-package com.internship.insurance.controller;
+package com.internship.insurance.rest;
 
 import com.internship.insurance.dto.AuthenticationRequestDto;
 import com.internship.insurance.model.Employee;
@@ -20,15 +20,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/auth")
-public class AuthenticationController {
+public class AuthenticationRest {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService employeeService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager,
-                                    JwtTokenProvider jwtTokenProvider,
-                                    UserService employeeService) {
+    public AuthenticationRest(AuthenticationManager authenticationManager,
+                              JwtTokenProvider jwtTokenProvider,
+                              UserService employeeService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.employeeService = employeeService;

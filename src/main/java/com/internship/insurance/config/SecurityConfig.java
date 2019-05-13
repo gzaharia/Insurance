@@ -76,5 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers("/api/categories")
                 .antMatchers("/api/properties");
+//        web
+//                .ignoring().anyRequest();
     }
 }

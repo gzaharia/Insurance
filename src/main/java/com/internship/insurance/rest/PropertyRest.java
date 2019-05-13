@@ -1,24 +1,22 @@
-package com.internship.insurance.controller;
+package com.internship.insurance.rest;
 
 import com.internship.insurance.model.Property;
 import com.internship.insurance.repository.PropertyRepo;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class PropertyController {
+public class PropertyRest {
     private final PropertyRepo propertyRepo;
 
-    public PropertyController(PropertyRepo propertyRepo) {
+    public PropertyRest(PropertyRepo propertyRepo) {
         this.propertyRepo = propertyRepo;
     }
 

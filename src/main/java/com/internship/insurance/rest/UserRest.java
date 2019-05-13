@@ -1,4 +1,4 @@
-package com.internship.insurance.controller;
+package com.internship.insurance.rest;
 
 import com.internship.insurance.dto.EmployeeDto;
 import com.internship.insurance.model.Employee;
@@ -13,11 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/users")
-public class UserController {
+public class UserRest {
 
     private final UserService employeeService;
 
-    public UserController(UserService employeeService) {
+    public UserRest(UserService employeeService) {
         this.employeeService = employeeService;
     }
 

@@ -1,5 +1,6 @@
 package com.internship.insurance.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,11 +15,13 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     private Date created;
 
+    @JsonIgnore
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated")
