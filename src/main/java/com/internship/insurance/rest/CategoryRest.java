@@ -1,11 +1,10 @@
-package com.internship.insurance.controller;
+package com.internship.insurance.rest;
 
 import com.internship.insurance.model.Category;
 import com.internship.insurance.repository.CategoryRepo;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +13,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class CategoryController {
+public class CategoryRest {
     private final CategoryRepo categoryRepo;
 
-    public CategoryController(CategoryRepo categoryRepo) {
+    public CategoryRest(CategoryRepo categoryRepo) {
         this.categoryRepo = categoryRepo;
     }
 
@@ -36,15 +35,13 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("categories/add")
     public Category addOneCategory(@RequestBody Category category) {
         categoryRepo.save(category);
         return category;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("categories/{id}")
+    @PutMapping("categories/edit/{id}")
     public ResponseEntity<Category> editOneCategory(
             @PathVariable Long id,
             @RequestBody Category categoryDetails
@@ -60,8 +57,7 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("categories/{id}")
+    @DeleteMapping("categories/delete/{id}")
     public void deleteOneCategory(@PathVariable Long id) {
         categoryRepo.deleteById(id);
     }

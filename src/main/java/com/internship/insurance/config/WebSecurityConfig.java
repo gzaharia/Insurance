@@ -1,6 +1,6 @@
 package com.internship.insurance.config;
 
-import com.internship.insurance.service.EmployeeService;
+import com.internship.insurance.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,10 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final EmployeeService employeeService;
+    private final UserService userService;
 
-    public WebSecurityConfig(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
     }
 
     @Bean
@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(employeeService)
+        auth.userDetailsService(userService)
                 .passwordEncoder(encoder());
     }
 
