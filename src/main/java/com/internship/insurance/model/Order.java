@@ -6,12 +6,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
-@Table(name="order")
+@Table(name="orders")
 
 public class Order {
     @Id
@@ -32,15 +30,25 @@ public class Order {
     @Column(name = "updated")
     private Date time_updated;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Property> properties;
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinTable(
+            name = "order_properties",
+            joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "property_id", referencedColumnName = "id")}
+    )
+    private Set<Property> properties;
 
     public Order() {
-        this.properties = new ArrayList<>();
+        this.properties = new HashSet<>();
     }
 
-    public Order(String status, double price, Date time_created, Date time_updated, List<Property> properties) {
+    public Order(String status, double price, Date time_created, Date time_updated, Set<Property> properties) {
         this.status = status;
         this.price = price;
         this.time_created = time_created;
@@ -88,11 +96,11 @@ public class Order {
         this.time_updated = time_updated;
     }
 
-    public List<Property> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<Property> properties) {
+    public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
 }
