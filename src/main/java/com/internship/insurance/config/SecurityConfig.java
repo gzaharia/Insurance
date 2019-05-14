@@ -1,5 +1,6 @@
 package com.internship.insurance.config;
 
+import com.internship.insurance.model.Roles;
 import com.internship.insurance.security.jwt.JwtConfigurer;
 import com.internship.insurance.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,9 +41,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -49,21 +70,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/login").permitAll()
 
                 // User - only for ADMIN
-                .antMatchers("/api/admin/users").hasRole("ADMIN")
-                .antMatchers("/api/admin/users/**").hasRole("ADMIN")
+                .antMatchers("/api/admin/users").hasRole(Roles.ADMIN.name())
+                .antMatchers("/api/admin/users/**").hasRole(Roles.ADMIN.name())
 
                 // Create, Update or Delete categories - only for ADMIN
-                .antMatchers("/api/categories/add").hasRole("ADMIN")
-                .antMatchers("/api/categories/edit/**").hasRole("ADMIN")
-                .antMatchers("/api/categories/delete/**").hasRole("ADMIN")
+                .antMatchers("/api/categories/add").hasRole(Roles.ADMIN.name())
+                .antMatchers("/api/categories/edit/**").hasRole(Roles.ADMIN.name())
+                .antMatchers("/api/categories/delete/**").hasRole(Roles.ADMIN.name())
 
                 // Create, Update or Delete properties - only for ADMIN
-                .antMatchers("/api/properties/add").hasRole("ADMIN")
-                .antMatchers("/api/properties/edit/**").hasRole("ADMIN")
-                .antMatchers("/api/properties/delete/**").hasRole("ADMIN")
+                .antMatchers("/api/properties/add").hasRole(Roles.ADMIN.name())
+                .antMatchers("/api/properties/edit/**").hasRole(Roles.ADMIN.name())
+                .antMatchers("/api/properties/delete/**").hasRole(Roles.ADMIN.name())
 
                 // Admin dashboard available for MODERATOR
-                .antMatchers("/api/admin/**").hasRole("MODERATOR")
+                .antMatchers("/api/admin/**").hasRole(Roles.MODERATOR.name())
 
                 .anyRequest().authenticated()
                 .and()
