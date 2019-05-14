@@ -1,6 +1,8 @@
 package com.internship.insurance.rest;
 
 import com.internship.insurance.model.Category;
+import com.internship.insurance.model.Property;
+import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.CategoryRepo;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -20,9 +22,14 @@ public class CategoryRest {
         this.categoryRepo = categoryRepo;
     }
 
-    @GetMapping("categories")
+    @GetMapping("categories/all")
     public List<Category> getAllCategories() {
         return categoryRepo.findAll();
+    }
+
+    @GetMapping("categories")
+    public List<Category> getAllActiveCategories(){
+        return categoryRepo.findAllActiveCategories();
     }
 
     @GetMapping("categories/{id}")
@@ -48,8 +55,9 @@ public class CategoryRest {
     ) throws NotFoundException {
         Optional<Category> categoryFromDb = categoryRepo.findById(id);
         if (categoryFromDb.isPresent()) {
-            BeanUtils.copyProperties(categoryDetails, categoryFromDb.get());
             categoryFromDb.get().setId(id);
+            categoryFromDb.get().setTitle(categoryDetails.getTitle());
+            categoryFromDb.get().setStatus(categoryDetails.getStatus());
             categoryRepo.save(categoryFromDb.get());
             return ResponseEntity.ok(categoryFromDb.get());
         } else {
@@ -59,7 +67,12 @@ public class CategoryRest {
 
     @DeleteMapping("categories/delete/{id}")
     public void deleteOneCategory(@PathVariable Long id) {
-        categoryRepo.deleteById(id);
+        Optional<Category> categoryDelete = categoryRepo.findById(id);
+        if (categoryDelete.isPresent()){
+            categoryDelete.get().setStatus(Status.DELETED);
+            categoryRepo.save(categoryDelete.get());
+        }
+        //categoryRepo.deleteById(id);
     }
 
 }

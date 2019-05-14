@@ -19,6 +19,7 @@ public class Property {
     private Category category;
 
     private double coefficient;
+    private Status status;
 
     public Property() {
     }
@@ -59,5 +60,13 @@ public class Property {
 
     public void setCoefficient(double coefficient) {
         this.coefficient = coefficient;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
