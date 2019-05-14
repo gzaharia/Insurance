@@ -1,6 +1,7 @@
 package com.internship.insurance.rest;
 
 import com.internship.insurance.model.Category;
+import com.internship.insurance.model.Property;
 import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.CategoryRepo;
 import javassist.NotFoundException;
@@ -54,11 +55,11 @@ public class CategoryRest {
     ) throws NotFoundException {
         Optional<Category> categoryFromDb = categoryRepo.findById(id);
         if (categoryFromDb.isPresent()) {
-            BeanUtils.copyProperties(categoryDetails, categoryFromDb.get());
             categoryFromDb.get().setId(id);
             categoryFromDb.get().setTitle(categoryDetails.getTitle());
-            categoryRepo.save(categoryDetails);
-            return ResponseEntity.ok(categoryDetails);
+            categoryFromDb.get().setStatus(categoryDetails.getStatus());
+            categoryRepo.save(categoryFromDb.get());
+            return ResponseEntity.ok(categoryFromDb.get());
         } else {
             throw new NotFoundException("Category not found!");
         }
