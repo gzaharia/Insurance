@@ -4,7 +4,6 @@ import com.internship.insurance.dto.EmployeeDto;
 import com.internship.insurance.model.Employee;
 import com.internship.insurance.service.UserService;
 import javassist.NotFoundException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +44,18 @@ public class UserRest {
         return ResponseEntity.ok(employeeDto);
     }
 
+    @GetMapping("/name/{username}")
+    public ResponseEntity<EmployeeDto> getOne(@PathVariable String username) throws NotFoundException {
+        Employee employee = employeeService.findByUsername(username);
+
+        if (employee == null)
+            throw new NotFoundException("Employee with username: " + username + ", not found!");
+
+        EmployeeDto employeeDto = EmployeeDto.fromEmployee(employee);
+
+        return ResponseEntity.ok(employeeDto);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<EmployeeDto> addNew(@RequestBody Employee employee) {
         employeeService.register(employee);
@@ -56,12 +67,9 @@ public class UserRest {
             @PathVariable Long id,
             @RequestBody Employee employee
     ) {
-        Employee newEmployee = new Employee();
-        BeanUtils.copyProperties(employee, newEmployee);
-        newEmployee.setId(id);
-        employeeService.register(employee);
+        employeeService.update(employee);
 
-        return ResponseEntity.ok(EmployeeDto.fromEmployee(newEmployee));
+        return ResponseEntity.ok(EmployeeDto.fromEmployee(employee));
     }
 
     @DeleteMapping("/delete/{id}")

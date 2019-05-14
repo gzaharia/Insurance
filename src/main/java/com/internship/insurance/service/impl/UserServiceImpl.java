@@ -6,11 +6,13 @@ import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.EmployeeRepo;
 import com.internship.insurance.repository.RoleRepo;
 import com.internship.insurance.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -37,6 +39,19 @@ public class UserServiceImpl implements UserService {
         employee.setStatus(Status.ACTIVE);
 
         return employeeRepo.save(employee);
+    }
+
+    @Override
+    public Employee update(Employee employee) {
+        Optional<Employee> employeeFromDb = employeeRepo.findById(employee.getId());
+        Employee newEmployee = new Employee();
+
+        if (employee.getPassword() == null && employeeFromDb.isPresent())
+            employee.setPassword(employeeFromDb.get().getPassword());
+
+        BeanUtils.copyProperties(employee, newEmployee);
+
+        return employeeRepo.save(newEmployee);
     }
 
     @Override

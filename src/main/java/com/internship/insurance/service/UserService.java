@@ -8,6 +8,8 @@ public interface UserService {
 
     Employee register(Employee employee);
 
+    Employee update(Employee employee);
+
     List<Employee> getAll();
 
     Employee findByUsername(String username);
