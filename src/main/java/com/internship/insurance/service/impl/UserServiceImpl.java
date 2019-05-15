@@ -56,7 +56,15 @@ public class UserServiceImpl implements UserService {
         newEmployee.setId(employee.getId());
         newEmployee.setFirstName(employee.getFirstName());
         newEmployee.setLastName(employee.getLastName());
-        newEmployee.setRoles(employeeFromDb.get().getRoles());
+
+        if (employee.getRoles() == null)
+            newEmployee.setRoles(employeeFromDb.get().getRoles());
+        else {
+            Set<Role> newRoles = new HashSet<>();
+            for (Role role : employee.getRoles())
+                newRoles.add(roleRepo.findByName(role.getName()));
+            newEmployee.setRoles(newRoles);
+        }
 
         return employeeRepo.save(newEmployee);
     }
