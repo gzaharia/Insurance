@@ -47,9 +47,16 @@ public class UserServiceImpl implements UserService {
         Employee newEmployee = new Employee();
 
         if (employee.getPassword() == null && employeeFromDb.isPresent())
-            employee.setPassword(employeeFromDb.get().getPassword());
+            newEmployee.setPassword(employeeFromDb.get().getPassword());
+        else
+            newEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
-        BeanUtils.copyProperties(employee, newEmployee);
+        newEmployee.setUserName(employee.getUserName());
+        newEmployee.setStatus(employee.getStatus());
+        newEmployee.setId(employee.getId());
+        newEmployee.setFirstName(employee.getFirstName());
+        newEmployee.setLastName(employee.getLastName());
+        newEmployee.setRoles(employeeFromDb.get().getRoles());
 
         return employeeRepo.save(newEmployee);
     }

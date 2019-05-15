@@ -69,7 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Login form
                 .antMatchers("/api/auth/login").permitAll()
 
-                // User - only for ADMIN
+                // User - only for ADMIN / MODERATOR
+                .antMatchers("/api/admin/users/name/**").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/admin/users/edit/**").hasRole(Roles.MODERATOR.name())
                 .antMatchers("/api/admin/users").hasRole(Roles.ADMIN.name())
                 .antMatchers("/api/admin/users/**").hasRole(Roles.ADMIN.name())
 
