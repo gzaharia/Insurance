@@ -54,8 +54,8 @@ public class Category {
         this.title = title;
     }
 
-    public Status getStatus() {
-        return status;
+    public int getStatus() {
+        return status.ordinal();
     }
 
     public void setStatus(Status status) {

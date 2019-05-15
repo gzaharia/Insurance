@@ -57,7 +57,7 @@ public class CategoryRest {
         if (categoryFromDb.isPresent()) {
             categoryFromDb.get().setId(id);
             categoryFromDb.get().setTitle(categoryDetails.getTitle());
-            categoryFromDb.get().setStatus(categoryDetails.getStatus());
+            categoryFromDb.get().setStatus(categoryDetails.getStatus()==1?Status.ACTIVE:Status.DELETED);
             categoryRepo.save(categoryFromDb.get());
             return ResponseEntity.ok(categoryFromDb.get());
         } else {

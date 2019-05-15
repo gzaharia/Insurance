@@ -1,6 +1,7 @@
 package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -19,6 +20,8 @@ public class Property {
     private Category category;
 
     private double coefficient;
+    @ColumnDefault(value="1")
+    @Column(nullable = false)
     private Status status;
 
     public Property() {
