@@ -19,10 +19,12 @@ public class OrderRest {
     public OrderRest(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
     }
+
     @GetMapping("orders")
     public List<Order> getAllOrders(){
         return orderRepo.findAll();
     }
+
     @PutMapping("orders/edit/{id}")
     public ResponseEntity<Order> editOneOrder(
             @PathVariable Long id,
