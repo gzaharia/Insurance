@@ -6,7 +6,6 @@ import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.EmployeeRepo;
 import com.internship.insurance.repository.RoleRepo;
 import com.internship.insurance.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +29,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Employee register(Employee employee) {
-        Role newEmployeeRole = roleRepo.findByName("ROLE_MODERATOR");
-        Set<Role> newEmployeeRoles = new HashSet<>();
-        newEmployeeRoles.add(newEmployeeRole);
+        Set<Role> newRoles = new HashSet<>();
+        if (employee.getRoles() == null || employee.getRoles().isEmpty()) {
+            Role newEmployeeRole = roleRepo.findByName("ROLE_MODERATOR");
+            newRoles.add(newEmployeeRole);
+            employee.setRoles(newRoles);
+        } else {
+            for (Role role : employee.getRoles())
+                newRoles.add(roleRepo.findByName(role.getName()));
+            employee.setRoles(newRoles);
+        }
 
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        employee.setRoles(newEmployeeRoles);
         employee.setStatus(Status.ACTIVE);
 
         return employeeRepo.save(employee);
