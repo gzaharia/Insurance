@@ -97,8 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/api/categories")
-                .antMatchers("/api/properties");
+                .antMatchers("/api/categories/all")
+                .antMatchers("/api/properties/all");
 //        web
 //                .ignoring().anyRequest();
     }
