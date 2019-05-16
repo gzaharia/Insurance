@@ -1,7 +1,6 @@
 package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -29,7 +28,6 @@ public class BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    @ColumnDefault("ACTIVE")
     private Status status;
 
     public Long getId() {
