@@ -1,6 +1,5 @@
 package com.internship.insurance.rest;
 
-import com.internship.insurance.model.Category;
 import com.internship.insurance.model.Order;
 import com.internship.insurance.repository.OrderRepo;
 import javassist.NotFoundException;
@@ -20,6 +19,7 @@ public class OrderRest {
     public OrderRest(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
     }
+
     @GetMapping("orders")
     public List<Order> getAllOrders(){
         return orderRepo.findAll();
@@ -30,6 +30,7 @@ public class OrderRest {
         orderRepo.save(order);
         return order;
     }
+
     @PutMapping("orders/edit/{id}")
     public ResponseEntity<Order> editOneOrder(
             @PathVariable Long id,
