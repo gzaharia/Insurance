@@ -2,6 +2,7 @@ package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,9 +15,11 @@ import java.util.*;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
+
+    @Column(name="status",columnDefinition = "New")
     private String status;
+
     private double price;
     @JsonIgnore
     @CreationTimestamp
@@ -33,7 +36,7 @@ public class Order {
     @ManyToMany(
             fetch = FetchType.EAGER,
             cascade = {
-                    CascadeType.PERSIST,
+                    CascadeType.REFRESH,
                     CascadeType.MERGE
             }
     )
