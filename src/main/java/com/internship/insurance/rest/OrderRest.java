@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,11 @@ public class OrderRest {
             basePrice *= property.getCoefficient();
         }
 
-        return ResponseEntity.ok(basePrice);
+        return ResponseEntity.ok(
+                Double.valueOf(
+                        new DecimalFormat("#.##").format(basePrice)
+                )
+        );
     }
 
     @PostMapping("orders/add")
