@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CategoryRepo extends JpaRepository<Category, Long> {
 
-    @Query(value = "Select * from categories c where status=1 or status is null order by id", nativeQuery = true)
+    @Query(value = "Select * from categories c where not status=2 order by id", nativeQuery = true)
     List<Category> findAllActiveCategories();
 }
