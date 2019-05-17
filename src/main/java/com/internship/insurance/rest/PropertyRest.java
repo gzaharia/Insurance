@@ -54,6 +54,7 @@ public class PropertyRest {
         if (propertyFromDb.isPresent()) {
             BeanUtils.copyProperties(propertyDetails, propertyFromDb.get());
             propertyFromDb.get().setId(id);
+            propertyFromDb.get().setStatus(propertyDetails.getStatus()==2?Status.DELETED:Status.ACTIVE);
             propertyRepo.save(propertyFromDb.get());
             return ResponseEntity.ok(propertyFromDb.get());
         } else {
