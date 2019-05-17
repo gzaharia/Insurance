@@ -1,28 +1,52 @@
 package com.internship.insurance.rest;
 
+import com.internship.insurance.model.InsuranceOffer;
 import com.internship.insurance.model.Order;
+import com.internship.insurance.model.Property;
+import com.internship.insurance.repository.InsuranceRepo;
 import com.internship.insurance.repository.OrderRepo;
+import com.internship.insurance.repository.PropertyRepo;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
 public class OrderRest {
     private final OrderRepo orderRepo;
+    private final PropertyRepo propertyRepo;
+    private final InsuranceRepo insuranceRepo;
 
-    public OrderRest(OrderRepo orderRepo) {
+    public OrderRest(OrderRepo orderRepo, PropertyRepo propertyRepo, InsuranceRepo insuranceRepo) {
         this.orderRepo = orderRepo;
+        this.propertyRepo = propertyRepo;
+        this.insuranceRepo = insuranceRepo;
     }
 
     @GetMapping("orders")
     public List<Order> getAllOrders(){
         return orderRepo.findAll();
+    }
+
+    @PostMapping("/orders/price")
+    public ResponseEntity<Double> getPrice(@RequestBody Order order) {
+        Set<Long> ids = order.getProperties().stream()
+                .map(Property::getId)
+                .collect(Collectors.toSet());
+
+        Set<Property> properties = new HashSet<>(propertyRepo.findAllById(ids));
+
+        Double basePrice = insuranceRepo.getByTitle("RCA").getBasePrice();
+        for (Property property : properties) {
+            basePrice *= property.getCoefficient();
+        }
+
+        return ResponseEntity.ok(basePrice);
     }
 
     @PostMapping("orders/add")
