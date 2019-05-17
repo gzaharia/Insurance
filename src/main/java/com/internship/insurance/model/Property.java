@@ -22,17 +22,18 @@ public class Property {
     private Category category;
 
     private double coefficient;
-    @ColumnDefault(value="1")
+    @ColumnDefault(value="0")
     @Column(nullable = false)
     private Status status;
 
     public Property() {
     }
 
-    public Property(String title, Category category, double coefficient) {
+    public Property(String title, Category category, double coefficient, Status status) {
         this.title = title;
         this.category = category;
         this.coefficient = coefficient;
+        this.status = status;
     }
 
     public Long getId() {
@@ -67,8 +68,8 @@ public class Property {
         this.coefficient = coefficient;
     }
 
-    public Status getStatus() {
-        return status;
+    public int getStatus() {
+        return status.ordinal();
     }
 
     public void setStatus(Status status) {
