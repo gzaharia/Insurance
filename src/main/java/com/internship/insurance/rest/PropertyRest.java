@@ -41,7 +41,6 @@ public class PropertyRest {
 
     @PostMapping("properties/add")
     public void addProperty(@RequestBody Property property) {
-//        property.setStatus(Status.ACTIVE);
         propertyRepo.save(property);
     }
 
