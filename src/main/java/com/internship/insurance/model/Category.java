@@ -15,8 +15,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @ColumnDefault(value="1")
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "int default 1")
     private Status status;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

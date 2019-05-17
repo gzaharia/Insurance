@@ -22,8 +22,7 @@ public class Property {
     private Category category;
 
     private double coefficient;
-    @ColumnDefault(value="0")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "int default 1")
     private Status status;
 
     public Property() {

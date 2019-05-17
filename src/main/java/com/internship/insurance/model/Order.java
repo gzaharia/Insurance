@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="status",columnDefinition = "New")
+    @Column(name="status",columnDefinition = "varchar default 'New'" )
     private String status;
 
     private double price;

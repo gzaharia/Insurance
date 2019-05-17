@@ -24,8 +24,7 @@ public class Role {
     private Set<Employee> employees;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    @ColumnDefault("ACTIVE")
+    @Column(name = "status", columnDefinition = "varchar default 'ACTIVE'")
     @JsonIgnore
     private Status status;
 
