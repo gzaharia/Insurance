@@ -1,6 +1,7 @@
 package com.internship.insurance.rest;
 
 import com.internship.insurance.model.Property;
+import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.PropertyRepo;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -39,6 +41,7 @@ public class PropertyRest {
 
     @PostMapping("properties/add")
     public void addProperty(@RequestBody Property property) {
+        property.setStatus(Status.ACTIVE);
         propertyRepo.save(property);
     }
 

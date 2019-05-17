@@ -2,7 +2,6 @@ package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -24,8 +23,7 @@ public class Role {
     private Set<Employee> employees;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    @ColumnDefault("ACTIVE")
+    @Column(name = "status", columnDefinition = "varchar default 'ACTIVE'")
     @JsonIgnore
     private Status status;
 

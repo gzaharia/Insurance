@@ -1,8 +1,6 @@
 package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import net.bytebuddy.implementation.bind.annotation.Default;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,11 +13,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @ColumnDefault(value="1")
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "int default 1")
     private Status status;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     @JsonManagedReference
     private List<Property> properties;
 
