@@ -47,6 +47,14 @@ public class Order {
     )
     private Set<Property> properties;
 
+    private String docNumber;
+    private String licensePlateNumber;
+
+    private String idnp;
+    private String firstName;
+    private String lastName;
+    private RightOfPossesion rightOfPossesion;
+
     public Order() {
         this.properties = new HashSet<>();
     }
@@ -105,5 +113,53 @@ public class Order {
 
     public void setProperties(Set<Property> properties) {
         this.properties = properties;
+    }
+
+    public String getDocNumber() {
+        return docNumber;
+    }
+
+    public void setDocNumber(String docNumber) {
+        this.docNumber = docNumber;
+    }
+
+    public String getLicensePlateNumber() {
+        return licensePlateNumber;
+    }
+
+    public void setLicensePlateNumber(String licensePlateNumber) {
+        this.licensePlateNumber = licensePlateNumber;
+    }
+
+    public String getIdnp() {
+        return idnp;
+    }
+
+    public void setIdnp(String idnp) {
+        this.idnp = idnp;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public RightOfPossesion getRightOfPossesion() {
+        return rightOfPossesion;
+    }
+
+    public void setRightOfPossesion(RightOfPossesion rightOfPossesion) {
+        this.rightOfPossesion = rightOfPossesion;
     }
 }
