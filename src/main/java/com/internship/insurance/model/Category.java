@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -19,18 +21,18 @@ public class Category {
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @JsonManagedReference
-    private List<Property> properties;
+    private Set<Property> properties;
 
     public Category() {
-        this.properties = new ArrayList<>();
+        this.properties = new HashSet<>();
     }
 
     public Category(String title) {
         this.title = title;
-        this.properties = new ArrayList<>();
+        this.properties = new HashSet<>();
     }
 
-    public Category(String title, List<Property> properties) {
+    public Category(String title, Set<Property> properties) {
         this.title = title;
         this.properties = properties;
         this.status = Status.ACTIVE;
@@ -60,11 +62,11 @@ public class Category {
         this.status = status;
     }
 
-    public List<Property> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<Property> properties) {
+    public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
 }
