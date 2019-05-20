@@ -2,6 +2,7 @@ package com.internship.insurance.rest;
 
 import com.internship.insurance.model.InsuranceOffer;
 import com.internship.insurance.model.Order;
+import com.internship.insurance.model.OrderStatus;
 import com.internship.insurance.model.Property;
 import com.internship.insurance.repository.InsuranceRepo;
 import com.internship.insurance.repository.OrderRepo;
@@ -34,8 +35,7 @@ public class OrderRest {
         return orderRepo.findAll();
     }
 
-    @PostMapping("/orders/price")
-    public ResponseEntity<Double> getPrice(@RequestBody Order order) {
+    private Double computePrice(Order order) {
         Set<Long> ids = order.getProperties().stream()
                 .map(Property::getId)
                 .collect(Collectors.toSet());
@@ -47,15 +47,26 @@ public class OrderRest {
             basePrice *= property.getCoefficient();
         }
 
+        return Double.valueOf(new DecimalFormat("#.##").format(basePrice));
+    }
+
+    @PostMapping("/orders/price")
+    public ResponseEntity<Double> getPrice(@RequestBody Order order) {
         return ResponseEntity.ok(
-                Double.valueOf(
-                        new DecimalFormat("#.##").format(basePrice)
-                )
-        );
+                computePrice(order)
+                );
     }
 
     @PostMapping("orders/add")
     public Order addOneOrder(@RequestBody Order order) {
+        Set<Long> ids = order.getProperties().stream()
+                .map(Property::getId)
+                .collect(Collectors.toSet());
+
+        Set<Property> properties = new HashSet<>(propertyRepo.findAllById(ids));
+        order.setProperties(properties);
+        order.setPrice(computePrice(order));
+        order.setStatus(OrderStatus.PENDING);
         orderRepo.save(order);
         return order;
     }
