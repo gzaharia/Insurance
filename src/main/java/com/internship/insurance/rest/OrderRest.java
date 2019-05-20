@@ -1,9 +1,6 @@
 package com.internship.insurance.rest;
 
-import com.internship.insurance.model.InsuranceOffer;
-import com.internship.insurance.model.Order;
-import com.internship.insurance.model.OrderStatus;
-import com.internship.insurance.model.Property;
+import com.internship.insurance.model.*;
 import com.internship.insurance.repository.InsuranceRepo;
 import com.internship.insurance.repository.OrderRepo;
 import com.internship.insurance.repository.PropertyRepo;
@@ -33,6 +30,31 @@ public class OrderRest {
     @GetMapping("orders")
     public List<Order> getAllOrders(){
         return orderRepo.findAll();
+    }
+
+    @GetMapping("orders/pending")
+    public List<Order> getPendingOrders() {
+        return orderRepo.findAllByStatus(OrderStatus.PENDING);
+    }
+
+    @GetMapping("orders/approved")
+    public List<Order> getApprovedOrders() {
+        return orderRepo.findAllByStatus(OrderStatus.APPROVED);
+    }
+
+    @GetMapping("orders/declined")
+    public List<Order> getDeclinedOrders() {
+        return orderRepo.findAllByStatus(OrderStatus.DECLINED);
+    }
+
+    @GetMapping("orders/{id}")
+    public Order getOneOrder(@PathVariable Long id) throws NotFoundException {
+        Optional<Order> orderFromDb = orderRepo.findById(id);
+        if (orderFromDb.isPresent()) {
+            return orderFromDb.get();
+        } else {
+            throw new NotFoundException("Order not found");
+        }
     }
 
     private Double computePrice(Order order) {
