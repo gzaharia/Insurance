@@ -1,11 +1,9 @@
 package com.internship.insurance.rest;
 
 import com.internship.insurance.model.Category;
-import com.internship.insurance.model.Property;
 import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.CategoryRepo;
 import javassist.NotFoundException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class CategoryRest {
     }
 
     @GetMapping("categories")
-    public List<Category> getAllActiveCategories(){
+    public List<Category> getAllActiveCategories() {
         return categoryRepo.findAllActiveCategories();
     }
 
@@ -52,27 +50,28 @@ public class CategoryRest {
     public ResponseEntity<Category> editOneCategory(
             @PathVariable Long id,
             @RequestBody Category categoryDetails
-    ) throws NotFoundException {
+    ) {
         Optional<Category> categoryFromDb = categoryRepo.findById(id);
         if (categoryFromDb.isPresent()) {
             categoryFromDb.get().setId(id);
             categoryFromDb.get().setTitle(categoryDetails.getTitle());
-            categoryFromDb.get().setStatus(categoryDetails.getStatus()==2?Status.DELETED:Status.ACTIVE);
+            categoryFromDb.get().setStatus(categoryDetails.getStatus());
             categoryRepo.save(categoryFromDb.get());
             return ResponseEntity.ok(categoryFromDb.get());
-        } else {
-            throw new NotFoundException("Category not found!");
         }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("categories/delete/{id}")
-    public void deleteOneCategory(@PathVariable Long id) {
+    public ResponseEntity<Category> deleteOneCategory(@PathVariable Long id) {
         Optional<Category> categoryDelete = categoryRepo.findById(id);
-        if (categoryDelete.isPresent()){
+        if (categoryDelete.isPresent()) {
             categoryDelete.get().setStatus(Status.DELETED);
             categoryRepo.save(categoryDelete.get());
+            return ResponseEntity.ok(categoryDelete.get());
         }
-        //categoryRepo.deleteById(id);
+
+        return ResponseEntity.badRequest().build();
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -48,22 +47,27 @@ public class PropertyRest {
     public ResponseEntity<Property> editOneProperty(
             @PathVariable Long id,
             @RequestBody Property propertyDetails
-    ) throws NotFoundException {
+    ) {
         Optional<Property> propertyFromDb = propertyRepo.findById(id);
 
         if (propertyFromDb.isPresent()) {
             BeanUtils.copyProperties(propertyDetails, propertyFromDb.get());
             propertyFromDb.get().setId(id);
-            propertyFromDb.get().setStatus(propertyDetails.getStatus()==2?Status.DELETED:Status.ACTIVE);
+            propertyFromDb.get().setStatus(propertyDetails.getStatus());
             propertyRepo.save(propertyFromDb.get());
             return ResponseEntity.ok(propertyFromDb.get());
-        } else {
-            throw new NotFoundException("Property not found!");
         }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("properties/delete/{id}")
-    public void deleteOneProperty(@PathVariable Long id) {
-        propertyRepo.deleteById(id);
+    public ResponseEntity<Property> deleteOneProperty(@PathVariable Long id) {
+        Optional<Property> propertyFromDb = propertyRepo.findById(id);
+        if (propertyFromDb.isPresent()){
+            propertyFromDb.get().setStatus(Status.DELETED);
+            propertyRepo.save(propertyFromDb.get());
+            return ResponseEntity.ok(propertyFromDb.get());
+        }
+        return ResponseEntity.badRequest().build();
     }
 }
