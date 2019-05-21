@@ -20,9 +20,14 @@ public class InsuranceRest {
         this.insuranceRepo = insuranceRepo;
     }
 
-    @GetMapping("/insurances")
+    @GetMapping("/insurances/all")
     public ResponseEntity<List<InsuranceOffer>> getAllInsurances() {
         return ResponseEntity.ok(insuranceRepo.findAll());
+    }
+
+    @GetMapping("/insurances")
+    public ResponseEntity<List<InsuranceOffer>> getAllActive() {
+        return ResponseEntity.ok(insuranceRepo.getAllByStatus(Status.ACTIVE));
     }
 
     @GetMapping("/insurances/{id}")
