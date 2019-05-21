@@ -1,5 +1,6 @@
 package com.internship.insurance.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
@@ -34,6 +35,11 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated")
     private Date time_updated;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "insurance_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
+    private InsuranceOffer insurance;
 
     @ManyToMany(
             fetch = FetchType.EAGER,
