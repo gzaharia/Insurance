@@ -27,7 +27,7 @@ public class BaseEntity {
     private Date updated;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status" ,columnDefinition = "VARCHAR default 'ACTIVE'")
     private Status status;
 
     public Long getId() {

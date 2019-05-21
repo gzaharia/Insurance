@@ -1,19 +1,12 @@
 package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "properties")
-public class Property {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Property extends BaseEntity {
 
     private String title;
 
@@ -23,27 +16,6 @@ public class Property {
     private Category category;
 
     private double coefficient;
-
-    @Column(columnDefinition = "int default 1")
-    private Status status;
-
-    public Property() {
-    }
-
-    public Property(String title, Category category, double coefficient, Status status) {
-        this.title = title;
-        this.category = category;
-        this.coefficient = coefficient;
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -69,11 +41,4 @@ public class Property {
         this.coefficient = coefficient;
     }
 
-    public int getStatus() {
-        return status.ordinal();
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 }
