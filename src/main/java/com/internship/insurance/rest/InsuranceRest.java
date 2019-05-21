@@ -18,23 +18,23 @@ public class InsuranceRest {
         this.insuranceRepo = insuranceRepo;
     }
 
-    @GetMapping("/insurance")
+    @GetMapping("/insurances")
     public ResponseEntity<List<InsuranceOffer>> getAllInsurances() {
         return ResponseEntity.ok(insuranceRepo.findAll());
     }
 
-    @GetMapping("/insurance/{id}")
+    @GetMapping("/insurances/{id}")
     public ResponseEntity<InsuranceOffer> getOneInsurance(@PathVariable Long id) {
         return ResponseEntity.ok(insuranceRepo.findById(id).orElse(null));
     }
 
-    @GetMapping("/insurance/name/{name}")
+    @GetMapping("/insurances/name/{name}")
     public ResponseEntity<InsuranceOffer> getOneInsuranceByUsername(@PathVariable String name) {
         InsuranceOffer insuranceOffer = insuranceRepo.getByTitle(name);
         return ResponseEntity.ok(insuranceOffer);
     }
 
-    @PutMapping("/insurance/edit/{id}")
+    @PutMapping("/insurances/edit/{id}")
     public ResponseEntity<InsuranceOffer> editOneInsurance(
             @PathVariable Long id,
             @RequestBody InsuranceOffer insuranceOffer
