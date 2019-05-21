@@ -85,6 +85,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/properties/edit/**").hasRole(Roles.ADMIN.name())
                 .antMatchers("/api/properties/delete/**").hasRole(Roles.ADMIN.name())
 
+                // Orders - MODERATOR / ADMIN
+                .antMatchers("/api/orders").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/orders/pending").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/orders/approved").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/orders/declined").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/orders/{id}").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/orders/edit/status/{id}").hasRole(Roles.MODERATOR.name())
+
                 // Admin dashboard available for MODERATOR
                 .antMatchers("/api/admin/**").hasRole(Roles.MODERATOR.name())
 
@@ -95,11 +103,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-//        web
-//                .ignoring()
-//                .antMatchers("/api/categories")
-//                .antMatchers("/api/properties/all");
         web
-                .ignoring().anyRequest();
+                .ignoring()
+                .antMatchers("/api/categories")
+                .antMatchers("/api/properties/all")
+                .antMatchers("/api/insurances")
+                .antMatchers("/api/insurances/**")
+                .antMatchers("/api/orders/price")
+                .antMatchers("/api/orders/add");
+//        web
+//                .ignoring().anyRequest();
     }
 }
