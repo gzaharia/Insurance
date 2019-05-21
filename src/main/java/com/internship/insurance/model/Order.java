@@ -2,6 +2,7 @@ package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -17,8 +18,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "status", columnDefinition = "varchar default 'New'")
-    private String status;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     private double price;
     @JsonIgnore
@@ -59,7 +61,7 @@ public class Order {
         this.properties = new HashSet<>();
     }
 
-    public Order(String status, double price, Date time_created, Date time_updated, Set<Property> properties) {
+    public Order(OrderStatus status, double price, Date time_created, Date time_updated, Set<Property> properties) {
         this.status = status;
         this.price = price;
         this.time_created = time_created;
@@ -75,11 +77,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
