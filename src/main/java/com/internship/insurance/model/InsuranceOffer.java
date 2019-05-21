@@ -9,7 +9,7 @@ import java.util.Set;
 @Table(name = "insurance_offer")
 public class InsuranceOffer extends BaseEntity {
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
     @Column(name = "base_price")

@@ -39,8 +39,8 @@ public class PropertyRest {
     }
 
     @PostMapping("properties/add")
-    public void addProperty(@RequestBody Property property) {
-        propertyRepo.save(property);
+    public ResponseEntity<Property> addProperty(@RequestBody Property property) {
+        return ResponseEntity.ok(propertyRepo.save(property));
     }
 
     @PutMapping("properties/edit/{id}")
