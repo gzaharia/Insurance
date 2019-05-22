@@ -24,13 +24,11 @@ public class Order {
     private OrderStatus status;
 
     private double price;
-    @JsonIgnore
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     private Date time_created;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated")
@@ -106,10 +104,6 @@ public class Order {
 
     public Date getTime_created() {
         return time_created;
-    }
-
-    public void setTime_created(Date time_created) {
-        this.time_created = time_created;
     }
 
     public Date getTime_updated() {
