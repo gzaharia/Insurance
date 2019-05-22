@@ -63,6 +63,9 @@ public class Order {
     private String lastName;
     private RightOfPossesion rightOfPossesion;
 
+    private String email;
+    private String phoneNo;
+
     public Order() {
         this.properties = new HashSet<>();
     }
@@ -74,6 +77,8 @@ public class Order {
         this.time_updated = time_updated;
         this.properties = properties;
     }
+
+
 
     public Long getId() {
         return id;
@@ -169,5 +174,29 @@ public class Order {
 
     public void setRightOfPossesion(RightOfPossesion rightOfPossesion) {
         this.rightOfPossesion = rightOfPossesion;
+    }
+
+    public InsuranceOffer getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(InsuranceOffer insurance) {
+        this.insurance = insurance;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 }
