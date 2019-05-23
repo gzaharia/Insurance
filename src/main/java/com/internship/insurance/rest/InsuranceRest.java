@@ -3,19 +3,18 @@ package com.internship.insurance.rest;
 import com.internship.insurance.model.InsuranceOffer;
 import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.InsuranceRepo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
 public class InsuranceRest {
 
     private final InsuranceRepo insuranceRepo;
-
     public InsuranceRest(InsuranceRepo insuranceRepo) {
         this.insuranceRepo = insuranceRepo;
     }
@@ -26,9 +25,9 @@ public class InsuranceRest {
     }
 
     @GetMapping("/insurances")
-    public ResponseEntity<List<InsuranceOffer>> getAllActive() {
-        return ResponseEntity.ok(insuranceRepo.getAllByStatus(Status.ACTIVE));
-    }
+    public ResponseEntity<Set<InsuranceOffer>> getAllActive() {
+        return ResponseEntity.ok(insuranceRepo.getAllByStatusOrderByTitleAsc(Status.ACTIVE));
+        }
 
     @GetMapping("/insurances/{id}")
     public ResponseEntity<InsuranceOffer> getOneInsurance(@PathVariable Long id) {
