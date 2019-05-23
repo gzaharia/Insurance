@@ -47,4 +47,12 @@ public class Category extends BaseEntity {
     public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
+
+    public InsuranceOffer getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(InsuranceOffer insurance) {
+        this.insurance = insurance;
+    }
 }

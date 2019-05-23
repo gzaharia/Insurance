@@ -1,13 +1,19 @@
 package com.internship.insurance.rest;
 
+import com.internship.insurance.config.EmailConfig;
 import com.internship.insurance.model.*;
 import com.internship.insurance.repository.InsuranceRepo;
 import com.internship.insurance.repository.OrderRepo;
 import com.internship.insurance.repository.PropertyRepo;
+import com.internship.insurance.service.EmailService;
+import freemarker.template.Configuration;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
@@ -21,6 +27,9 @@ public class OrderRest {
     private final OrderRepo orderRepo;
     private final PropertyRepo propertyRepo;
     private final InsuranceRepo insuranceRepo;
+
+    @Autowired
+    EmailService emailService;
 
     public OrderRest(OrderRepo orderRepo, PropertyRepo propertyRepo, InsuranceRepo insuranceRepo) {
         this.orderRepo = orderRepo;
@@ -90,6 +99,11 @@ public class OrderRest {
         order.setProperties(properties);
         order.setPrice(computePrice(order));
         order.setStatus(OrderStatus.PENDING);
+        try {
+            emailService.sendEmail(order, order.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         orderRepo.save(order);
         return order;
     }
@@ -108,6 +122,11 @@ public class OrderRest {
                 orderStatus = OrderStatus.PENDING;
             }
             orderFromDb.get().setStatus(orderStatus);
+            try {
+                emailService.sendEmail(orderFromDb.get(), orderFromDb.get().getStatus());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             orderRepo.save(orderFromDb.get());
             return ResponseEntity.ok(orderFromDb.get());
         }

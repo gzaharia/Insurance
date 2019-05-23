@@ -103,15 +103,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/api/categories")
-                .antMatchers("/api/properties/all")
-                .antMatchers("/api/insurances")
-                .antMatchers("/api/insurances/**")
-                .antMatchers("/api/orders/price")
-                .antMatchers("/api/orders/add");
 //        web
-//                .ignoring().anyRequest();
+//                .ignoring()
+//                .antMatchers("/api/categories")
+//                .antMatchers("/api/properties/all")
+//                .antMatchers("/api/insurances")
+//                .antMatchers("/api/insurances/**")
+//                .antMatchers("/api/orders/price")
+//                .antMatchers("/api/orders/add");
+        web
+                .ignoring().anyRequest();
     }
 }
