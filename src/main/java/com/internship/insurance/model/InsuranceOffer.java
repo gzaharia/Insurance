@@ -34,4 +34,12 @@ public class InsuranceOffer extends BaseEntity {
     public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 }

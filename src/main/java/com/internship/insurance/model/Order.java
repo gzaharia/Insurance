@@ -1,7 +1,6 @@
 package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -75,8 +74,6 @@ public class Order {
         this.time_updated = time_updated;
         this.properties = properties;
     }
-
-
 
     public Long getId() {
         return id;
