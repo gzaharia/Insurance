@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        config.setAllowedOrigins(Collections.singletonList("https://localhost:4200"));
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
         source.registerCorsConfiguration("/**", config);
@@ -70,8 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/login").permitAll()
 
                 // User - only for ADMIN / MODERATOR
-                .antMatchers("/api/admin/users/name/**").hasRole(Roles.MODERATOR.name())
-                .antMatchers("/api/admin/users/edit/**").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/admin/users/name/**").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+                .antMatchers("/api/admin/users/edit/**").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
                 .antMatchers("/api/admin/users").hasRole(Roles.ADMIN.name())
                 .antMatchers("/api/admin/users/**").hasRole(Roles.ADMIN.name())
 
@@ -86,15 +86,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/properties/delete/**").hasRole(Roles.ADMIN.name())
 
                 // Orders - MODERATOR / ADMIN
-                .antMatchers("/api/orders").hasRole(Roles.MODERATOR.name())
-                .antMatchers("/api/orders/pending").hasRole(Roles.MODERATOR.name())
-                .antMatchers("/api/orders/approved").hasRole(Roles.MODERATOR.name())
-                .antMatchers("/api/orders/declined").hasRole(Roles.MODERATOR.name())
-                .antMatchers("/api/orders/{id}").hasRole(Roles.MODERATOR.name())
-                .antMatchers("/api/orders/edit/status/{id}").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/orders").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+                .antMatchers("/api/orders/pending").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+                .antMatchers("/api/orders/approved").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+                .antMatchers("/api/orders/declined").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+                .antMatchers("/api/orders/{id}").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+                .antMatchers("/api/orders/edit/status/{id}").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
 
                 // Admin dashboard available for MODERATOR
-                .antMatchers("/api/admin/**").hasRole(Roles.MODERATOR.name())
+                .antMatchers("/api/admin/**").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
 
                 .anyRequest().authenticated()
                 .and()
