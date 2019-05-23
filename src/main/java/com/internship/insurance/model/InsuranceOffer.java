@@ -1,8 +1,10 @@
 package com.internship.insurance.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,5 +35,13 @@ public class InsuranceOffer extends BaseEntity {
 
     public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

@@ -58,6 +58,18 @@ public class OrderRest {
         }
     }
 
+    @GetMapping("/orders/insurance/{orderId}")
+    public InsuranceOffer getInsuranceFromOrder(@PathVariable Long orderId) {
+        Optional<Order> order = orderRepo.findById(orderId);
+
+        if (order.isPresent()) {
+            Optional<InsuranceOffer> insuranceOffer = insuranceRepo.findById(order.get().getInsurance().getId());
+            return insuranceOffer.orElse(null);
+        }
+
+        return null;
+    }
+
     private Double computePrice(Order order) {
         Set<Long> ids = order.getProperties().stream()
                 .map(Property::getId)
