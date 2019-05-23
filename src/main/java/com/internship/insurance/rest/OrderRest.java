@@ -112,12 +112,12 @@ public class OrderRest {
         order.setProperties(properties);
         order.setPrice(computePrice(OrderService.toDto(order)));
         order.setStatus(OrderStatus.PENDING);
+        Order savedOrder = orderRepo.save(order);
         try {
-            emailService.sendEmail(order, order.getStatus());
+            emailService.sendEmail(savedOrder);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        orderRepo.save(order);
         return order;
     }
 
@@ -136,7 +136,7 @@ public class OrderRest {
             }
             orderFromDb.get().setStatus(orderStatus);
             try {
-                emailService.sendEmail(orderFromDb.get(), orderFromDb.get().getStatus());
+                emailService.sendEmail(orderFromDb.get());
             } catch (Exception e) {
                 e.printStackTrace();
             }

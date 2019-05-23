@@ -33,7 +33,7 @@ public class EmailService {
 
 
 
-    public void sendEmail(Order order, OrderStatus status) throws Exception {
+    public void sendEmail(Order order) throws Exception {
         Mail mail = new Mail();
         mail.setMailTo(order.getEmail());
         mail.setMailFrom("office@mvd-g.md");
@@ -47,6 +47,7 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         Map<String, Object> model = new HashMap<>();
+        model.put("id", order.getId());
         model.put("firstName", order.getFirstName());
         model.put("lastName", order.getLastName());
         model.put("insuranceTitle", order.getInsurance().getTitle());
@@ -56,7 +57,7 @@ public class EmailService {
 
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
         Template t;
-        if(status == OrderStatus.PENDING) {
+        if(order.getStatus() == OrderStatus.PENDING) {
             t = freemarkerConfig.getTemplate("pendingOrder.html");
         }
         else {
