@@ -1,9 +1,11 @@
 package com.internship.insurance.rest;
 
+import com.internship.insurance.dto.OrderDto;
 import com.internship.insurance.model.*;
 import com.internship.insurance.repository.InsuranceRepo;
 import com.internship.insurance.repository.OrderRepo;
 import com.internship.insurance.repository.PropertyRepo;
+import com.internship.insurance.service.OrderService;
 import javassist.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -70,14 +72,14 @@ public class OrderRest {
         return null;
     }
 
-    private Double computePrice(Order order) {
+    private Double computePrice(OrderDto order) {
         Set<Long> ids = order.getProperties().stream()
                 .map(Property::getId)
                 .collect(Collectors.toSet());
 
         Set<Property> properties = new HashSet<>(propertyRepo.findAllById(ids));
 
-        Double basePrice = insuranceRepo.getByTitle("RCA").getBasePrice();
+        Double basePrice = insuranceRepo.getByTitle(order.getInsurance().getTitle()).getBasePrice();
         for (Property property : properties) {
             basePrice *= property.getCoefficient();
         }
@@ -86,10 +88,8 @@ public class OrderRest {
     }
 
     @PostMapping("/orders/price")
-    public ResponseEntity<Double> getPrice(@RequestBody Order order) {
-        return ResponseEntity.ok(
-                computePrice(order)
-                );
+    public ResponseEntity<Double> getPrice(@RequestBody OrderDto order) {
+        return ResponseEntity.ok(computePrice(order));
     }
 
     @PostMapping("orders/add")
@@ -99,8 +99,9 @@ public class OrderRest {
                 .collect(Collectors.toSet());
 
         Set<Property> properties = new HashSet<>(propertyRepo.findAllById(ids));
+        order.setInsurance(insuranceRepo.findById(order.getInsurance().getId()).orElse(null));
         order.setProperties(properties);
-        order.setPrice(computePrice(order));
+        order.setPrice(computePrice(OrderService.toDto(order)));
         order.setStatus(OrderStatus.PENDING);
         orderRepo.save(order);
         return order;
