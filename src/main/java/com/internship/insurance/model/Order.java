@@ -36,7 +36,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "insurance_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
+    @JsonManagedReference
     private InsuranceOffer insurance;
 
     @ManyToMany(

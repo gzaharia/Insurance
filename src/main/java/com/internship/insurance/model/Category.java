@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -46,5 +45,14 @@ public class Category extends BaseEntity {
 
     public void setProperties(Set<Property> properties) {
         this.properties = properties;
+    }
+
+
+    public InsuranceOffer getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(InsuranceOffer insurance) {
+        this.insurance = insurance;
     }
 }
