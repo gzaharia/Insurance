@@ -1,25 +1,29 @@
 package com.internship.insurance.rest;
 
 import com.internship.insurance.dto.OrderDto;
-import com.internship.insurance.config.EmailConfig;
-import com.internship.insurance.model.*;
+import com.internship.insurance.model.InsuranceOffer;
+import com.internship.insurance.model.Order;
+import com.internship.insurance.model.OrderStatus;
+import com.internship.insurance.model.Property;
 import com.internship.insurance.repository.InsuranceRepo;
 import com.internship.insurance.repository.OrderRepo;
 import com.internship.insurance.repository.PropertyRepo;
-import com.internship.insurance.service.OrderService;
 import com.internship.insurance.service.EmailService;
-import freemarker.template.Configuration;
+import com.internship.insurance.service.OrderService;
 import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,10 +34,13 @@ public class OrderRest {
     private final PropertyRepo propertyRepo;
     private final InsuranceRepo insuranceRepo;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     EmailService emailService;
 
     public OrderRest(OrderRepo orderRepo, PropertyRepo propertyRepo, InsuranceRepo insuranceRepo) {
+
         this.orderRepo = orderRepo;
         this.propertyRepo = propertyRepo;
         this.insuranceRepo = insuranceRepo;
@@ -116,7 +123,7 @@ public class OrderRest {
         try {
             emailService.sendEmail(savedOrder);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error: " + e.getMessage());
         }
         return order;
     }
@@ -138,13 +145,14 @@ public class OrderRest {
             try {
                 emailService.sendEmail(orderFromDb.get());
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Error: " + e.getMessage());
             }
             orderRepo.save(orderFromDb.get());
             return ResponseEntity.ok(orderFromDb.get());
         }
         else {
-            throw new NotFoundException("Order not found!");
+            logger.error("Error: ", new NotFoundException("Order not found!").getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -161,7 +169,8 @@ public class OrderRest {
 
         }
         else{
-            throw new NotFoundException("Order not found !");
+            logger.error("Error: ", new NotFoundException("Order not found!").getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 }
