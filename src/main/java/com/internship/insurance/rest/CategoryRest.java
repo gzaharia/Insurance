@@ -1,5 +1,6 @@
 package com.internship.insurance.rest;
 
+import com.internship.insurance.dto.CategoryDto;
 import com.internship.insurance.model.Category;
 import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.CategoryRepo;
@@ -7,6 +8,7 @@ import javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,18 @@ public class CategoryRest {
     @GetMapping("categories/all")
     public List<Category> getAllCategories() {
         return categoryRepo.findAll();
+    }
+
+
+    @GetMapping("categories/insurances")
+    public List<CategoryDto> getAllInsuranceCategories() {
+        List<CategoryDto> categoryDtos = new ArrayList<>();
+         categoryRepo.findAll().forEach( c -> {
+             categoryDtos.add(new CategoryDto(c.getId(),c.getTitle(), c.getInsurance().getTitle(),c.getProperties(),c.getStatus().toString()));
+             // new CategoryDto(c.getId(),c.getTitle(), c.getInsurance().getTitle()
+         });
+
+         return  categoryDtos;
     }
 
     @GetMapping("categories")
