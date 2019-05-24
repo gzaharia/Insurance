@@ -24,14 +24,11 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-
     @Autowired
     private JavaMailSender sender;
 
     @Autowired
     private Configuration freemarkerConfig;
-
-
 
     public void sendEmail(Order order) throws Exception {
         Mail mail = new Mail();
