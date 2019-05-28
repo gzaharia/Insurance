@@ -67,7 +67,7 @@ public class CategoryRest {
     ) {
         Optional<Category> categoryFromDb = categoryRepo.findById(id);
         if (categoryFromDb.isPresent()) {
-            categoryFromDb.get().setId(id);
+            categoryFromDb.get().setId(id); // GZa  not need to set id one more time
             categoryFromDb.get().setTitle(categoryDetails.getTitle());
             categoryFromDb.get().setStatus(categoryDetails.getStatus());
             categoryFromDb.get().setInsurance(categoryDetails.getInsurance());
