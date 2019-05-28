@@ -4,6 +4,8 @@ import com.internship.insurance.model.Property;
 import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.PropertyRepo;
 import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin
 public class PropertyRest {
     private final PropertyRepo propertyRepo;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public PropertyRest(PropertyRepo propertyRepo) {
         this.propertyRepo = propertyRepo;
@@ -27,14 +30,15 @@ public class PropertyRest {
     }
 
     @GetMapping("properties/{id}")
-    public Property getOneProperty(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<Property> getOneProperty(@PathVariable Long id) {
         Optional<Property> propertyFromDb = propertyRepo.findById(id);
 
         if(propertyFromDb.isPresent()) {
-            return propertyFromDb.get();
+            return ResponseEntity.ok(propertyFromDb.get());
         }
         else {
-            throw new NotFoundException("Property not found");
+            logger.error("Error: " + "Property not found. Id: " + id);
+            return ResponseEntity.badRequest().build();
         }
     }
 

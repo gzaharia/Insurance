@@ -5,6 +5,8 @@ import com.internship.insurance.model.Category;
 import com.internship.insurance.model.Status;
 import com.internship.insurance.repository.CategoryRepo;
 import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,8 @@ import java.util.Optional;
 @CrossOrigin
 public class CategoryRest {
     private final CategoryRepo categoryRepo;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public CategoryRest(CategoryRepo categoryRepo) {
         this.categoryRepo = categoryRepo;
@@ -45,12 +49,13 @@ public class CategoryRest {
     }
 
     @GetMapping("categories/{id}")
-    public Category getOneCategory(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<Category> getOneCategory(@PathVariable Long id) {
         Optional<Category> categoryFromDb = categoryRepo.findById(id);
         if (categoryFromDb.isPresent()) {
-            return categoryFromDb.get();
+            return ResponseEntity.ok(categoryFromDb.get());
         } else {
-            throw new NotFoundException("Category not found");
+            logger.error("Error: " + "Category not found. Id: " + id);
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -85,7 +90,6 @@ public class CategoryRest {
             categoryRepo.save(categoryDelete.get());
             return ResponseEntity.ok(categoryDelete.get());
         }
-
         return ResponseEntity.badRequest().build();
     }
 
