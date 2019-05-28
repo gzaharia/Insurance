@@ -1,11 +1,11 @@
 package com.internship.insurance.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +23,7 @@ public class Order {
     private OrderStatus status;
 
     private double price;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
@@ -52,15 +53,28 @@ public class Order {
     )
     private Set<Property> properties;
 
+    @NotNull(message = "Numarul certificatului de inmatriculare este necesar!")
     private String docNumber;
+
+    @NotNull(message = "Numarul de inmatriculare este necesar!")
     private String licensePlateNumber;
 
+    @NotNull(message = "IDNP este necesar!")
     private String idnp;
+
+    @NotNull(message = "Numele este necesar!")
     private String firstName;
+
+    @NotNull(message = "Prenumele este necesar!")
     private String lastName;
+
+    @NotNull(message = "Dreptul de posesiune este necesar!")
     private RightOfPossesion rightOfPossesion;
 
+    @NotNull(message = "E-mail este necesar!")
     private String email;
+
+    @NotNull(message = "Nr. de telefon este necesar!")
     private String phoneNo;
 
     public Order() {

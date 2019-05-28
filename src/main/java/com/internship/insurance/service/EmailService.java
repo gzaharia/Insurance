@@ -1,21 +1,15 @@
 package com.internship.insurance.service;
 
-import com.internship.insurance.config.EmailConfig;
 import com.internship.insurance.model.Mail;
 import com.internship.insurance.model.Order;
 import com.internship.insurance.model.OrderStatus;
 import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-
-import freemarker.template.Template;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
@@ -40,7 +34,6 @@ public class EmailService {
                         " insurance order"
         );
         MimeMessage message = sender.createMimeMessage();
-
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         Map<String, Object> model = new HashMap<>();
@@ -54,20 +47,17 @@ public class EmailService {
 
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
         Template t;
-        if(order.getStatus() == OrderStatus.PENDING) {
+        if (order.getStatus() == OrderStatus.PENDING) {
             t = freemarkerConfig.getTemplate("pendingOrder.html");
+        } else if (order.getStatus() == OrderStatus.APPROVED) {
+            t = freemarkerConfig.getTemplate("approvedOrder.html");
+        } else {
+            t = freemarkerConfig.getTemplate("declinedOrder.html");
         }
-        else {
-            t = freemarkerConfig.getTemplate("order.html");
-        }
-
         String text = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
-
-
         helper.setTo(mail.getMailTo());
         helper.setText(text, true);
         helper.setSubject(mail.getMailSubject());
-
         sender.send(message);
     }
 }

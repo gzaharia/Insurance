@@ -1,4 +1,4 @@
-package com.internship.insurance.config;
+package com.internship.insurance.model;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

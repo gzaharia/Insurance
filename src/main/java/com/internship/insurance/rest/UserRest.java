@@ -4,6 +4,8 @@ import com.internship.insurance.dto.EmployeeDto;
 import com.internship.insurance.model.Employee;
 import com.internship.insurance.service.UserService;
 import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,8 @@ import java.util.List;
 public class UserRest {
 
     private final UserService employeeService;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     public UserRest(UserService employeeService) {
         this.employeeService = employeeService;
@@ -45,14 +49,14 @@ public class UserRest {
     }
 
     @GetMapping("/name/{username}")
-    public ResponseEntity<EmployeeDto> getOne(@PathVariable String username) throws NotFoundException {
+    public ResponseEntity<EmployeeDto> getOne(@PathVariable String username) {
         Employee employee = employeeService.findByUsername(username);
 
-        if (employee == null)
-            throw new NotFoundException("Employee with username: " + username + ", not found!");
-
+        if (employee == null) {
+            logger.error("Error: " + "Employee with username: " + username + ", not found!");
+            return ResponseEntity.badRequest().build();
+        }
         EmployeeDto employeeDto = EmployeeDto.fromEmployee(employee);
-
         return ResponseEntity.ok(employeeDto);
     }
 
