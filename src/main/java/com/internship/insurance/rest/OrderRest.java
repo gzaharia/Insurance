@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
@@ -35,14 +36,14 @@ public class OrderRest {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    EmailService emailService;
+    private final EmailService emailService;
 
-    public OrderRest(OrderRepo orderRepo, PropertyRepo propertyRepo, InsuranceRepo insuranceRepo) {
+    public OrderRest(OrderRepo orderRepo, PropertyRepo propertyRepo, InsuranceRepo insuranceRepo, EmailService emailService) {
 
         this.orderRepo = orderRepo;
         this.propertyRepo = propertyRepo;
         this.insuranceRepo = insuranceRepo;
+        this.emailService = emailService;
     }
 
     @GetMapping("orders")
@@ -108,7 +109,7 @@ public class OrderRest {
     }
 
     @PostMapping("orders/add")
-    public Order addOneOrder(@RequestBody Order order) {
+    public Order addOneOrder(@Valid @RequestBody Order order) {
         Set<Long> ids = order.getProperties().stream()
                 .map(Property::getId)
                 .collect(Collectors.toSet());
