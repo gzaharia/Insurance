@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/users")
+@CrossOrigin
 public class UserRest {
 
     private final UserService employeeService;
