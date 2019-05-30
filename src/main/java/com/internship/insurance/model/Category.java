@@ -31,6 +31,10 @@ public class Category extends BaseEntity {
     @JsonBackReference
     private InsuranceOffer insurance;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "input_type" ,columnDefinition = "VARCHAR default 'RADIO'")
+    private InputType inputType;
+
     public String getTitle() {
         return title;
     }
@@ -54,5 +58,13 @@ public class Category extends BaseEntity {
 
     public void setInsurance(InsuranceOffer insurance) {
         this.insurance = insurance;
+    }
+
+    public InputType getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(InputType inputType) {
+        this.inputType = inputType;
     }
 }
