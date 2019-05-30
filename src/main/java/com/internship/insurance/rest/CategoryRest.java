@@ -76,6 +76,7 @@ public class CategoryRest {
             categoryFromDb.get().setTitle(categoryDetails.getTitle());
             categoryFromDb.get().setStatus(categoryDetails.getStatus());
             categoryFromDb.get().setInsurance(categoryDetails.getInsurance());
+            categoryFromDb.get().setInputType(categoryDetails.getInputType());
             categoryRepo.save(categoryFromDb.get());
             return ResponseEntity.ok(categoryFromDb.get());
         }
