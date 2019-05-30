@@ -46,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("https://ng-insurance.herokuapp.com"));
+//        config.setAllowedOrigins(Collections.singletonList("https://ng-insurance.herokuapp.com"));
+        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
         source.registerCorsConfiguration("/**", config);
@@ -92,6 +93,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/orders/declined").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
                 .antMatchers("/api/orders/{id}").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
                 .antMatchers("/api/orders/edit/status/{id}").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
+
+                // Input types - MODERATOR / ADMIN
+                .antMatchers("/api/inputTypes").hasAnyRole(Roles.ADMIN.name(), Roles.MODERATOR.name())
 
                 // Admin dashboard available for MODERATOR
                 .antMatchers("/api/admin/**").hasAnyRole(Roles.MODERATOR.name(), Roles.ADMIN.name())
